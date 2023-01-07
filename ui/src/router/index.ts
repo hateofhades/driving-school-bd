@@ -1,13 +1,14 @@
 import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter, { NavigationGuardNext, RouteConfig, Route } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Profile from "../views/Profile.vue";
 import store from "@/store";
 
 Vue.use(VueRouter);
 
-const isLogged = (to: any, from: any, next: any) => {
+const isLogged = (to: Route, from: Route, next: NavigationGuardNext) => {
   if (store.getters.getUser.id !== -1) {
     next();
   } else {
@@ -31,6 +32,12 @@ const routes: Array<RouteConfig> = [
     path: "/register",
     name: "register",
     component: Register,
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
+    beforeEnter: isLogged
   }
 ];
 

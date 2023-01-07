@@ -12,7 +12,7 @@ export default Vue.extend({
   methods: {
     getUsername() {
       console.log(this.$store.getters.getUser);
-      return this.$store.getters.getUser.user.Username;
+      return this.$store.getters.getUser.Username;
     }
   }
 });
