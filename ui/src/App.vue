@@ -2,14 +2,8 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center" @click="goHome" style="cursor:pointer">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="/img/logo.png"
-          transition="scale-transition"
-          width="70"
-        />
+        <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="/img/logo.png" transition="scale-transition"
+          width="70" />
       </div>
 
       <v-spacer></v-spacer>
@@ -37,7 +31,7 @@ export default Vue.extend({
       return this.$store.state.user.id !== -1;
     }
   },
-  created () {
+  created() {
     const user = localStorage.getItem("user");
     if (user) {
       // If the user's information exists in localStorage, set it in the store

@@ -132,7 +132,7 @@ export default Vue.extend({
         LocatieInceput: this.modifyLocatie,
         IDProgramare: lesson.IDProgramare
       };
-      
+
       try {
         const response = await axios.put("http://localhost:3000/programare", data);
 

@@ -8,23 +8,12 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form>
-                            <v-text-field
-                                prepend-icon="mdi-account"
-                                name="login"
-                                label="Nume de Utilizator"
-                                type="text"
-                                v-model="username"
-                            ></v-text-field>
-                            <v-text-field
-                                id="password"
-                                prepend-icon="mdi-lock"
-                                name="password"
-                                label="Parola"
+                            <v-text-field prepend-icon="mdi-account" name="login" label="Nume de Utilizator" type="text"
+                                v-model="username"></v-text-field>
+                            <v-text-field id="password" prepend-icon="mdi-lock" name="password" label="Parola"
                                 :type="showPassword ? 'text' : 'password'"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                                @click:append="showPassword = !showPassword"
-                                v-model="password"
-                            ></v-text-field>
+                                @click:append="showPassword = !showPassword" v-model="password"></v-text-field>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
@@ -38,7 +27,7 @@
         <!-- ERROR DISPLAY -->
         <v-snackbar v-model="snackbar" :timeout="timeout" :color="color">
             {{ message }}
-            <v-spacer></v-spacer>   
+            <v-spacer></v-spacer>
             <v-btn text @click="snackbar = false">Close</v-btn>
         </v-snackbar>
     </v-container>
@@ -50,27 +39,27 @@ import { mapGetters } from "vuex";
 import axios from "axios";
 
 export default Vue.extend({
-	name: "LoginView",
-	computed: {
-		...mapGetters({
-			userState: "userStore/user"
-		})
-	},
-	data () {
-		return {
-			username: "",
-			password: "",
-			inc: false,
-			loading: true,
-			showPassword: false,
+    name: "LoginView",
+    computed: {
+        ...mapGetters({
+            userState: "userStore/user"
+        })
+    },
+    data() {
+        return {
+            username: "",
+            password: "",
+            inc: false,
+            loading: true,
+            showPassword: false,
             snackbar: false,
             message: "",
             timeout: 3000,
             color: "error"
-		};
-	},
-	methods: {
-		async login () {
+        };
+    },
+    methods: {
+        async login() {
             try {
                 const response = await axios.post("http://localhost:3000/login", {
                     username: this.username,
@@ -89,14 +78,14 @@ export default Vue.extend({
             } catch (error) {
                 console.log(error);
             }
-		},
-		stopLoading () {
-			this.loading = false;
-		},
-		resetPassword () {
-			this.$router.push("/reset-password");
         },
-        register () {
+        stopLoading() {
+            this.loading = false;
+        },
+        resetPassword() {
+            this.$router.push("/reset-password");
+        },
+        register() {
             this.$router.push("/register");
         }
     },

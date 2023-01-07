@@ -8,125 +8,47 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form>
-                            <v-text-field
-                                prepend-icon="mdi-account"
-                                name="login"
-                                label="Nume de Utilizator"
-                                type="text"
-                                v-model="username"
-                            ></v-text-field>
-                            <v-text-field
-                                id="password"
-                                prepend-icon="mdi-lock"
-                                name="password"
-                                label="Parola"
+                            <v-text-field prepend-icon="mdi-account" name="login" label="Nume de Utilizator" type="text"
+                                v-model="username"></v-text-field>
+                            <v-text-field id="password" prepend-icon="mdi-lock" name="password" label="Parola"
                                 :type="showPassword ? 'text' : 'password'"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                                @click:append="showPassword = !showPassword"
-                                v-model="password"
-                            ></v-text-field>
-                            <v-text-field
-                                id="email"
-                                prepend-icon="mdi-email"
-                                name="email"
-                                label="Email"
-                                type="email"
-                                v-model="email"
-                            ></v-text-field>
+                                @click:append="showPassword = !showPassword" v-model="password"></v-text-field>
+                            <v-text-field id="email" prepend-icon="mdi-email" name="email" label="Email" type="email"
+                                v-model="email"></v-text-field>
                             <v-row>
-                                <v-text-field
-                                    id="name"
-                                    prepend-icon="mdi-account"
-                                    name="name"
-                                    label="Nume"
-                                    type="text"
-                                    v-model="nume"
-                                    class="ml-3 mr-2"
-                                ></v-text-field>
-                                <v-text-field
-                                    id="prenume"
-                                    name="prenume"
-                                    label="Prenume"
-                                    type="text"
-                                    v-model="prenume"
-                                    class="mr-3"
-                                ></v-text-field>
+                                <v-text-field id="name" prepend-icon="mdi-account" name="name" label="Nume" type="text"
+                                    v-model="nume" class="ml-3 mr-2"></v-text-field>
+                                <v-text-field id="prenume" name="prenume" label="Prenume" type="text" v-model="prenume"
+                                    class="mr-3"></v-text-field>
                             </v-row>
-                            <v-text-field
-                                id="adresa"
-                                prepend-icon="mdi-map-marker"
-                                name="adresa"
-                                label="Adresa"
-                                type="text"
-                                v-model="adresa"
-                            ></v-text-field>
-                            <v-text-field
-                                id="cnp"
-                                prepend-icon="mdi-numeric"
-                                name="cnp"
-                                label="CNP"
-                                type="text"
-                                v-model="cnp"
-                            ></v-text-field>
-                            <v-menu
-                                ref="menu"
-                                v-model="menu"
-                                :close-on-content-click="false"
-                                :return-value.sync="date"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto"
-                            >
+                            <v-text-field id="adresa" prepend-icon="mdi-map-marker" name="adresa" label="Adresa"
+                                type="text" v-model="adresa"></v-text-field>
+                            <v-text-field id="cnp" prepend-icon="mdi-numeric" name="cnp" label="CNP" type="text"
+                                v-model="cnp"></v-text-field>
+                            <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
+                                transition="scale-transition" offset-y min-width="auto">
                                 <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                    v-model="date"
-                                    label="Data de Nastere"
-                                    prepend-icon="mdi-calendar"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                ></v-text-field>
+                                    <v-text-field v-model="date" label="Data de Nastere" prepend-icon="mdi-calendar"
+                                        readonly v-bind="attrs" v-on="on"></v-text-field>
                                 </template>
-                                <v-date-picker
-                                v-model="date"
-                                no-title
-                                scrollable
-                                >
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="menu = false"
-                                >
-                                    Cancel
-                                </v-btn>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="$refs.menu.save(date)"
-                                >
-                                    OK
-                                </v-btn>
+                                <v-date-picker v-model="date" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu = false">
+                                        Cancel
+                                    </v-btn>
+                                    <v-btn text color="primary" @click="$refs.menu.save(date)">
+                                        OK
+                                    </v-btn>
                                 </v-date-picker>
                             </v-menu>
                             <v-row justify="center">
-                                <v-switch
-                                    v-model="sex"
-                                    prepend-icon="mdi-gender-male"
-                                    append-icon="mdi-gender-female"
-                                    class="ml-3"
-                                ></v-switch>
+                                <v-switch v-model="sex" prepend-icon="mdi-gender-male" append-icon="mdi-gender-female"
+                                    class="ml-3"></v-switch>
                             </v-row>
-                            <v-select
-                                id="instructor"
-                                prepend-icon="mdi-account-supervisor"
-                                name="instructor"
-                                label="Instructor"
-                                :items="instructors"
-                                return-object
-                                item-text="Nume"
-                                v-model="instructor"
-                            ></v-select>
+                            <v-select id="instructor" prepend-icon="mdi-account-supervisor" name="instructor"
+                                label="Instructor" :items="instructors" return-object item-text="Nume"
+                                v-model="instructor"></v-select>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
@@ -140,7 +62,7 @@
         <!-- ERROR DISPLAY -->
         <v-snackbar v-model="snackbar" :timeout="timeout" :color="color">
             {{ message }}
-            <v-spacer></v-spacer>   
+            <v-spacer></v-spacer>
             <v-btn text @click="snackbar = false">Close</v-btn>
         </v-snackbar>
     </v-container>
@@ -152,13 +74,13 @@ import { mapGetters } from "vuex";
 import axios from "axios";
 
 export default Vue.extend({
-	name: "LoginView",
-	computed: {
-		...mapGetters({
-			userState: "userStore/user"
-		})
-	},
-	data () {
+    name: "LoginView",
+    computed: {
+        ...mapGetters({
+            userState: "userStore/user"
+        })
+    },
+    data() {
         const instructor: {
             Adresa: string;
             CNP: number;
@@ -180,9 +102,9 @@ export default Vue.extend({
             Salariu: 0,
             Sex: "M"
         };
-		return {
-			username: "",
-			password: "",
+        return {
+            username: "",
+            password: "",
             email: "",
             nume: "",
             prenume: "",
@@ -190,9 +112,9 @@ export default Vue.extend({
             date: "",
             cnp: "",
             adresa: "",
-			inc: false,
-			loading: true,
-			showPassword: false,
+            inc: false,
+            loading: true,
+            showPassword: false,
             snackbar: false,
             message: "",
             timeout: 3000,
@@ -200,13 +122,13 @@ export default Vue.extend({
             menu: false,
             instructor: instructor,
             instructors: []
-		};
-	},
-    mounted () {
+        };
+    },
+    mounted() {
         this.getInstructors();
     },
-	methods: {
-        async getInstructors () {
+    methods: {
+        async getInstructors() {
             try {
                 const response = await axios.get("http://localhost:3000/instructors");
 
@@ -215,12 +137,12 @@ export default Vue.extend({
                 console.log(error);
             }
         },
-        setSnackbar (message: string, color: string) {
+        setSnackbar(message: string, color: string) {
             this.message = message;
             this.color = color;
             this.snackbar = true;
         },
-		async register () {
+        async register() {
             if (this.username === "" || this.password === "" || this.email === "" || this.nume === "" || this.prenume === "" || this.date === "" || this.cnp === "" || this.adresa === "") {
                 return this.setSnackbar("Completati toate campurile", "error");
             }
@@ -258,14 +180,14 @@ export default Vue.extend({
             } catch (error) {
                 console.log(error);
             }
-		},
-		stopLoading () {
-			this.loading = false;
-		},
-		resetPassword () {
-			this.$router.push("/reset-password");
         },
-        login () {
+        stopLoading() {
+            this.loading = false;
+        },
+        resetPassword() {
+            this.$router.push("/reset-password");
+        },
+        login() {
             this.$router.push("/login");
         }
     },

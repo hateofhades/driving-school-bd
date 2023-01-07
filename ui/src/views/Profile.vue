@@ -47,7 +47,7 @@
                                 <v-list-item-title>CNP: {{ CNP }}</v-list-item-title>
                             </v-list-item>
                             <v-list-item>
-                                <v-list-item-title>Sex: {{ sex ? "Masculin" : "Feminin" }}</v-list-item-title>
+                                <v-list-item-title>Sex: {{ sex? "Masculin": "Feminin" }}</v-list-item-title>
                             </v-list-item>
                             <v-list-item>
                                 <v-list-item-title>Instructor: {{ numeInstructor }}</v-list-item-title>

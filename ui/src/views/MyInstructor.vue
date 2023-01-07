@@ -45,7 +45,7 @@ import axios from "axios";
 export default Vue.extend({
   name: "MyInstructor",
   data() {
-    const carsInstructor : {
+    const carsInstructor: {
       IDAutovehicul: number,
       AnFabricatie: number,
       Marca: string,
