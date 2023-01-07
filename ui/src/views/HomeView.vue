@@ -16,9 +16,14 @@
                 <v-btn color="primary" to="/bookLesson"><v-icon class="mr-2">mdi-calendar-plus</v-icon> Programeaza Ora de Condus</v-btn>
               </v-col>
             </v-row>
-            <v-row justify="center" class="pr-3 mb-2">
-                <v-spacer></v-spacer>
+            <v-row justify="center">
+              <v-col>
+                <v-btn color="primary" to="/myLessons"><v-icon class="mr-2">mdi-calendar</v-icon> Programarile Mele</v-btn>
+              </v-col>
+              <v-col></v-col>
+              <v-col>
                 <v-btn color="primary" to="/profile"><v-icon class="mr-2">mdi-account</v-icon> Profilul meu</v-btn>
+              </v-col>
             </v-row>
           </v-card-text>
         </v-card>

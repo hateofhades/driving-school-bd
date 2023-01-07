@@ -157,7 +157,7 @@ export default Vue.extend({
             this.createSnackbar("Programare creata cu success!", "success");
 
             setTimeout(() => {
-              this.$router.push("/");
+              this.$router.push("/myLessons");
             }, 3000);
           } else {
             this.createSnackbar("A aparut o eroare!", "error");

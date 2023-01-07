@@ -357,6 +357,75 @@ app.post("/bookLesson", (req, res) => {
     }
 });
 
+app.get("/programariElev/:username", (req, res) => {
+    const query = `SELECT p.IDProgramare, p.DataOra, p.LocatieInceput, a.Marca, a.Model, a.NrInmatriculare, a.AnFabricatie, a.Serie, a.Imagine
+            FROM Programari p JOIN Autovehicule a ON p.IDAutovehicul = a.IDAutovehicul
+            JOIN Elevi e ON p.IDElev = e.IDElev
+            JOIN Conturi c ON c.IDCont = e.IDCont
+            WHERE c.Username = "${req.params.username}"`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+
+                console.log(error);
+                return;
+            }
+
+            if (results.length > 0) {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            } else {
+                res.status(200).json({
+                    error: 401
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.delete("/programare/:id", (req, res) => {
+    const query = `DELETE FROM Programari WHERE IDProgramare = ${req.params.id}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+
+                console.log(error);
+                return;
+            }
+
+            if (results.affectedRows > 0) {
+                res.status(200).json({
+                    error: 0
+                });
+            } else {
+                res.status(200).json({
+                    error: 401
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
