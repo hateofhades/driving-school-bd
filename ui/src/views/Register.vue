@@ -117,14 +117,16 @@
                                     class="ml-3"
                                 ></v-switch>
                             </v-row>
-                            <v-text-field
+                            <v-select
                                 id="instructor"
                                 prepend-icon="mdi-account-supervisor"
                                 name="instructor"
                                 label="Instructor"
-                                type="text"
+                                :items="instructors"
+                                return-object
+                                item-text="Nume"
                                 v-model="instructor"
-                            ></v-text-field>
+                            ></v-select>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
@@ -157,6 +159,27 @@ export default Vue.extend({
 		})
 	},
 	data () {
+        const instructor: {
+            Adresa: string;
+            CNP: number;
+            DataNastere: string;
+            IDCont: number;
+            IDInstructor: number;
+            Nume: string;
+            Prenume: string;
+            Salariu: number;
+            Sex: string;
+        } = {
+            Adresa: "",
+            CNP: 0,
+            DataNastere: "",
+            IDCont: 0,
+            IDInstructor: -1,
+            Nume: "",
+            Prenume: "",
+            Salariu: 0,
+            Sex: "M"
+        };
 		return {
 			username: "",
 			password: "",
@@ -175,11 +198,37 @@ export default Vue.extend({
             timeout: 3000,
             color: "error",
             menu: false,
-            instructor: 1
+            instructor: instructor,
+            instructors: []
 		};
 	},
+    mounted () {
+        this.getInstructors();
+    },
 	methods: {
+        async getInstructors () {
+            try {
+                const response = await axios.get("http://localhost:3000/instructors");
+
+                this.instructors = response.data.instructors;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        setSnackbar (message: string, color: string) {
+            this.message = message;
+            this.color = color;
+            this.snackbar = true;
+        },
 		async register () {
+            if (this.username === "" || this.password === "" || this.email === "" || this.nume === "" || this.prenume === "" || this.date === "" || this.cnp === "" || this.adresa === "") {
+                return this.setSnackbar("Completati toate campurile", "error");
+            }
+            
+            if (this.instructor.IDInstructor === -1) {
+                return this.setSnackbar("Selectati un instructor", "error");
+            }
+
             const jsonBody = {
                 username: this.username,
                 password: this.password,
@@ -190,7 +239,7 @@ export default Vue.extend({
                 datanastere: this.date,
                 cnp: this.cnp,
                 adresa: this.adresa,
-                idinstructor: this.instructor
+                idinstructor: this.instructor.IDInstructor
             };
 
             console.log(jsonBody);

@@ -183,6 +183,39 @@ app.post('/deleteAccount', (req, res) => {
     }
 });
 
+app.get("/instructors", (req, res) => {
+    const query = `SELECT * FROM Instructori`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+
+                console.log(error);
+                return;
+            }
+
+            if (results.length > 0) {
+                res.status(200).json({
+                    error: 0,
+                    instructors: results
+                });
+            } else {
+                res.status(200).json({
+                    error: 401
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
