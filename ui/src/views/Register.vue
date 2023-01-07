@@ -11,7 +11,7 @@
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="login"
-                                label="Username"
+                                label="Nume de Utilizator"
                                 type="text"
                                 v-model="username"
                             ></v-text-field>
@@ -19,7 +19,7 @@
                                 id="password"
                                 prepend-icon="mdi-lock"
                                 name="password"
-                                label="Password"
+                                label="Parola"
                                 :type="showPassword ? 'text' : 'password'"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                 @click:append="showPassword = !showPassword"
@@ -80,7 +80,7 @@
                                 <template v-slot:activator="{ on, attrs }">
                                 <v-text-field
                                     v-model="date"
-                                    label="Data de nastere"
+                                    label="Data de Nastere"
                                     prepend-icon="mdi-calendar"
                                     readonly
                                     v-bind="attrs"
@@ -224,7 +224,7 @@ export default Vue.extend({
             if (this.username === "" || this.password === "" || this.email === "" || this.nume === "" || this.prenume === "" || this.date === "" || this.cnp === "" || this.adresa === "") {
                 return this.setSnackbar("Completati toate campurile", "error");
             }
-            
+
             if (this.instructor.IDInstructor === -1) {
                 return this.setSnackbar("Selectati un instructor", "error");
             }

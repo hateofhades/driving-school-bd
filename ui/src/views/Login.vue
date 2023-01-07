@@ -11,7 +11,7 @@
                             <v-text-field
                                 prepend-icon="mdi-account"
                                 name="login"
-                                label="Username"
+                                label="Nume de Utilizator"
                                 type="text"
                                 v-model="username"
                             ></v-text-field>
@@ -19,7 +19,7 @@
                                 id="password"
                                 prepend-icon="mdi-lock"
                                 name="password"
-                                label="Password"
+                                label="Parola"
                                 :type="showPassword ? 'text' : 'password'"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                 @click:append="showPassword = !showPassword"

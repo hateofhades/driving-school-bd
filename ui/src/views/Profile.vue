@@ -1,35 +1,35 @@
 <template>
     <v-container>
-        <v-row>
+        <v-row class="mt-4">
             <v-col cols="6">
                 <v-card>
                     <v-card-title>
-                        <h3>Change Password</h3>
+                        <h3>Schimba parola</h3>
                     </v-card-title>
                     <v-card-text>
                         <v-form ref="form" v-model="valid" class="pb-2">
-                            <v-text-field v-model="oldPassword" label="Old Password" type="password"
+                            <v-text-field v-model="oldPassword" label="Parola Veche" type="password"
                                 aria-required="true"></v-text-field>
-                            <v-text-field v-model="newPassword" label="New Password" type="password"
+                            <v-text-field v-model="newPassword" label="Parola Noua" type="password"
                                 aria-required="true"></v-text-field>
-                            <v-text-field v-model="confirmPassword" label="Confirm New Password" type="password"
+                            <v-text-field v-model="confirmPassword" label="Confirma Parola Noua" type="password"
                                 aria-required="true"></v-text-field>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn color="primary" @click="changePassword" :disabled="!valid">Save</v-btn>
+                        <v-btn color="primary" @click="changePassword" :disabled="!valid">Salveaza</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
             <v-col cols="6">
                 <v-card>
                     <v-card-title>
-                        <h3>Profile</h3>
+                        <h3>Profil</h3>
                     </v-card-title>
                     <v-card-text>
                         <v-list>
                             <v-list-item>
-                                <v-list-item-title>Username: {{ username }}</v-list-item-title>
+                                <v-list-item-title>Nume de Utilizator: {{ username }}</v-list-item-title>
                             </v-list-item>
                             <v-list-item>
                                 <v-list-item-title>Email: {{ email }}</v-list-item-title>
@@ -49,23 +49,26 @@
                             <v-list-item>
                                 <v-list-item-title>Sex: {{ sex ? "Masculin" : "Feminin" }}</v-list-item-title>
                             </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title>Instructor: {{ numeInstructor }}</v-list-item-title>
+                            </v-list-item>
                         </v-list>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="error" @click="showWarning = true">Delete Account</v-btn>
+                        <v-btn color="error" @click="showWarning = true">Sterge Contul</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
         <v-dialog v-model="showWarning" persistent max-width="290">
             <v-card>
-                <v-card-title class="headline">Warning</v-card-title>
-                <v-card-text>You are about to delete your account. This action cannot be undone.</v-card-text>
+                <v-card-title class="headline">Atentie!</v-card-title>
+                <v-card-text>Sunteti pe cale sa va stergeti contul. Actiunea nu poate fi anulata.</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="showWarning = false">Cancel</v-btn>
-                    <v-btn color="error" text @click="deleteAccount">Confirm</v-btn>
+                    <v-btn color="green darken-1" text @click="showWarning = false">Anuleaza</v-btn>
+                    <v-btn color="error" text @click="deleteAccount">Confirma</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -95,7 +98,8 @@ export default {
             CNP: 0,
             nastere: "",
             adresa: "",
-            sex: true
+            sex: true,
+            numeInstructor: "",
         };
     },
     methods: {
@@ -151,8 +155,24 @@ export default {
                     this.name = response.data.data.Nume + " " + response.data.data.Prenume;
                     this.CNP = response.data.data.CNP;
                     this.adresa = response.data.data.Adresa;
-                    this.nastere = response.data.data.DataNastere;
+                    this.nastere = response.data.data.DataNastere.substring(0, 10);
                     this.sex = response.data.data.Sex === "m";
+                } else {
+                    this.showError = true;
+                    this.errorMessage = "Invalid password";
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async getInstructor() {
+            try {
+                const response = await axios.get("http://localhost:3000/infoInstructorElev/" + this.$store.getters.getUser.Username);
+
+                if (response.data.error === 0) {
+                    console.log(response.data.data);
+
+                    this.numeInstructor = response.data.data.Nume + " " + response.data.data.Prenume;
                 } else {
                     this.showError = true;
                     this.errorMessage = "Invalid password";
@@ -168,6 +188,7 @@ export default {
     },
     mounted() {
         this.getUser();
+        this.getInstructor();
     }
 };
 </script>

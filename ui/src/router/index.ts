@@ -4,6 +4,8 @@ import HomeView from "../views/HomeView.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
+import MyInstructor from "../views/MyInstructor.vue";
+import BookLesson from "../views/BookLesson.vue";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -37,6 +39,18 @@ const routes: Array<RouteConfig> = [
     path: "/profile",
     name: "profile",
     component: Profile,
+    beforeEnter: isLogged
+  },
+  {
+    path: "/myInstructor",
+    name: "myInstructor",
+    component: MyInstructor,
+    beforeEnter: isLogged
+  },
+  {
+    path: "/bookLesson",
+    name: "bookLesson",
+    component: BookLesson,
     beforeEnter: isLogged
   }
 ];
