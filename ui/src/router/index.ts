@@ -7,6 +7,7 @@ import Profile from "../views/Profile.vue";
 import MyInstructor from "../views/MyInstructor.vue";
 import BookLesson from "../views/BookLesson.vue";
 import MyLessons from "../views/MyLessons.vue";
+import MyTrips from "../views/MyTrips.vue";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -58,6 +59,12 @@ const routes: Array<RouteConfig> = [
     path: "/myLessons",
     name: "myLessons",
     component: MyLessons,
+    beforeEnter: isLogged
+  },
+  {
+    path: "/myTrips",
+    name: "myTrips",
+    component: MyTrips,
     beforeEnter: isLogged
   }
 ];

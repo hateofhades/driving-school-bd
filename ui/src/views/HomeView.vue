@@ -10,7 +10,7 @@
                 <v-btn color="primary" to="/myInstructor"><v-icon class="mr-2">mdi-account-supervisor</v-icon> Instructorul meu</v-btn>
               </v-col>
               <v-col>
-                <v-btn color="primary" to="/myLessons"><v-icon class="mr-2">mdi-clipboard-text-clock</v-icon> Istoric Ore Condus</v-btn>
+                <v-btn color="primary" to="/myTrips"><v-icon class="mr-2">mdi-clipboard-text-clock</v-icon> Istoric Ore Condus</v-btn>
               </v-col>
               <v-col>
                 <v-btn color="primary" to="/bookLesson"><v-icon class="mr-2">mdi-calendar-plus</v-icon> Programeaza Ora de Condus</v-btn>
