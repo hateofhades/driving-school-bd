@@ -34,6 +34,21 @@
                             <v-list-item>
                                 <v-list-item-title>Email: {{ email }}</v-list-item-title>
                             </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title>Nume: {{ name }}</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title>Adresa: {{ adresa }}</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title>Data Nastere: {{ nastere }}</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title>CNP: {{ CNP }}</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-list-item-title>Sex: {{ sex ? "Masculin" : "Feminin" }}</v-list-item-title>
+                            </v-list-item>
                         </v-list>
                     </v-card-text>
                     <v-card-actions>
@@ -77,6 +92,10 @@ export default {
             username: "",
             name: "",
             email: "",
+            CNP: 0,
+            nastere: "",
+            adresa: "",
+            sex: true
         };
     },
     methods: {
@@ -121,11 +140,34 @@ export default {
             } catch (error) {
                 console.error(error);
             }
+        },
+        async getUser() {
+            try {
+                const response = await axios.get("http://localhost:3000/infoElev/" + this.$store.getters.getUser.Username);
+
+                if (response.data.error === 0) {
+                    console.log(response.data.data);
+
+                    this.name = response.data.data.Nume + " " + response.data.data.Prenume;
+                    this.CNP = response.data.data.CNP;
+                    this.adresa = response.data.data.Adresa;
+                    this.nastere = response.data.data.DataNastere;
+                    this.sex = response.data.data.Sex === "m";
+                } else {
+                    this.showError = true;
+                    this.errorMessage = "Invalid password";
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
     },
     created() {
         this.username = this.$store.getters.getUser.Username;
         this.email = this.$store.getters.getUser.Email;
+    },
+    mounted() {
+        this.getUser();
     }
 };
 </script>

@@ -216,6 +216,41 @@ app.get("/instructors", (req, res) => {
     }
 });
 
+app.get("/infoElev/:username", (req, res) => {
+    const query = `SELECT e.Nume, e.Prenume, e.Sex, e.DataNastere, e.CNP, e.Adresa
+    FROM Elevi e JOIN Conturi c ON e.IDCont = c.IDCont
+    WHERE c.Username = '${req.params.username}'`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+
+                console.log(error);
+                return;
+            }
+
+            if (results.length > 0) {
+                res.status(200).json({
+                    error: 0,
+                    data: results[0]
+                });
+            } else {
+                res.status(200).json({
+                    error: 401
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
