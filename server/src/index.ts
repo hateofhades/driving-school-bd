@@ -216,6 +216,62 @@ app.get("/instructors", (req, res) => {
     }
 });
 
+app.post("/addInstructor", (req, res) => {
+    const { username, password, email, nume, prenume, sex, datanastere, cnp, adresa, salariu } = req.body;
+    const query = `INSERT INTO Conturi (Username, Parola, Email) VALUES ('${username}', '${password}', '${email}')`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+
+                console.log(error);
+                return;
+            }
+
+            if (results.affectedRows > 0) {
+                const queryReg = `INSERT INTO Instructori (Nume, Prenume, Sex, DataNastere, CNP, Adresa, Salariu, IDCont) VALUES ('${nume}', '${prenume}', '${sex}', '${datanastere}', '${cnp}', '${adresa}', '${salariu}', '${results.insertId}')`;
+                console.log(queryReg);
+
+                connection.query(queryReg, (err, resReg, flds) => {
+                    if (err) {
+                        res.status(200).json({
+                            error: 500
+                        });
+
+                        console.log(err);
+                        return;
+                    }
+
+                    if (resReg.affectedRows > 0) {
+                        res.status(200).json({
+                            error: 0
+                        });
+                    } else {
+                        res.status(200).json({
+                            error: 500
+                        });
+                    }
+                }
+                );
+            } else {
+                res.status(200).json({
+                    error: 500
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+
+        console.log(error);
+    }
+});
+
 app.get("/infoElev/:username", (req, res) => {
     const query = `SELECT e.Nume, e.Prenume, e.Sex, e.DataNastere, e.CNP, e.Adresa
     FROM Elevi e JOIN Conturi c ON e.IDCont = c.IDCont
@@ -487,6 +543,77 @@ app.put("/programare", (req, res) => {
             } else {
                 res.status(200).json({
                     error: 401
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/users", (req, res) => {
+    const query = `SELECT * FROM Conturi`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.delete("/user/:id", (req, res) => {
+    const query = `DELETE FROM Conturi WHERE IDCont = ${req.params.id}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/students", (req, res) => {
+    const query = `SELECT * FROM Elevi`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
                 });
             }
         });

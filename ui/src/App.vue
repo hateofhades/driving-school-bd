@@ -7,7 +7,7 @@
       </div>
 
       <v-spacer></v-spacer>
-      <v-icon class="mr-4" v-if="isLoggedIn" @click="goToProfile">mdi-account</v-icon>
+      <v-icon class="mr-4" v-if="isLoggedIn && $store.getters.getUser.TipCont !== 'A'" @click="goToProfile">mdi-account</v-icon>
       <v-icon v-if="isLoggedIn" @click="logOut">mdi-logout</v-icon>
     </v-app-bar>
 

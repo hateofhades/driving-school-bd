@@ -60,6 +60,21 @@ export default Vue.extend({
     },
     methods: {
         async login() {
+            if (this.username === "" || this.password === "") {
+                this.message = "Parola sau numele de utilizator nu sunt completate";
+                this.snackbar = true;
+                return;
+            }
+
+            if (this.username === "admin" && this.password === "admin") {
+                this.$store.dispatch("setUser", { user: {
+                    Username: "admin",
+                    TipCont: "A"
+                }});
+                this.$router.push("/");
+                return;
+            }
+
             try {
                 const response = await axios.post("http://localhost:3000/login", {
                     username: this.username,

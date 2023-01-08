@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="center" align="center">
+    <v-row justify="center" align="center" v-if="$store.getters.getUser.TipCont === 'U'">
       <v-col cols="10">
         <v-card>
           <v-card-title class="headline">Bine ai venit, {{ name }}! Pregatit pentru o noua lectie?</v-card-title>
@@ -28,6 +28,37 @@
               <v-col>
                 <v-btn color="primary" to="/profile"><v-icon class="mr-2">mdi-account</v-icon> Profilul meu</v-btn>
               </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center" align="center" v-if="$store.getters.getUser.TipCont === 'A'">
+      <v-col cols="10">
+        <v-card>
+          <v-card-title>Panou Administrator</v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col>
+                <v-btn color="primary" to="/admin/users"><v-icon class="mr-2">mdi-account-multiple</v-icon>
+                  Utilizatori</v-btn>
+              </v-col>
+              <v-col>
+                <v-btn color="primary" to="/admin/instructors"><v-icon class="mr-2">mdi-account-supervisor</v-icon>
+                  Instructori</v-btn>
+              </v-col>
+              <v-col>
+                <v-btn color="primary" to="/admin/students"><v-icon class="mr-2">mdi-account-multiple-outline</v-icon>
+                  Elevi</v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col></v-col>
+              <v-col>
+                <v-btn color="primary" to="/admin/vehicles"><v-icon class="mr-2">mdi-car</v-icon>
+                  Autovehicule</v-btn>
+              </v-col>
+              <v-col></v-col>
             </v-row>
           </v-card-text>
         </v-card>

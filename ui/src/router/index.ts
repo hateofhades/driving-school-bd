@@ -8,12 +8,25 @@ import MyInstructor from "../views/MyInstructor.vue";
 import BookLesson from "../views/BookLesson.vue";
 import MyLessons from "../views/MyLessons.vue";
 import MyTrips from "../views/MyTrips.vue";
+
+import AdminUsers from "../views/admin/Users.vue";
+import AdminStudents from "../views/admin/Students.vue";
+import AdminInstructors from "../views/admin/Instructors.vue";
+
 import store from "@/store";
 
 Vue.use(VueRouter);
 
 const isLogged = (to: Route, from: Route, next: NavigationGuardNext) => {
   if (store.getters.getUser.id !== -1) {
+    next();
+  } else {
+    next("/login");
+  }
+};
+
+const isAdmin = (to: Route, from: Route, next: NavigationGuardNext) => {
+  if (store.getters.getUser.TipCont === "A") {
     next();
   } else {
     next("/login");
@@ -66,6 +79,24 @@ const routes: Array<RouteConfig> = [
     name: "myTrips",
     component: MyTrips,
     beforeEnter: isLogged
+  },
+  {
+    path: "/admin/users",
+    name: "adminUsers",
+    component: AdminUsers,
+    beforeEnter: isAdmin
+  },
+  {
+    path: "/admin/students",
+    name: "adminStudents",
+    component: AdminStudents,
+    beforeEnter: isAdmin
+  },
+  {
+    path: "/admin/instructors",
+    name: "adminInstructors",
+    component: AdminInstructors,
+    beforeEnter: isAdmin
   }
 ];
 
