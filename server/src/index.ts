@@ -624,6 +624,147 @@ app.get("/students", (req, res) => {
     }
 });
 
+app.get("/vehicles", (req, res) => {
+    const query = `SELECT * FROM Autovehicule`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/vehicleInstructors/:id", (req, res) => {
+    const query = `SELECT i.IDInstructor, i.Nume, i.Prenume FROM Instructori i JOIN InstructorAutovehicul ia ON i.IDInstructor = ia.IDInstructor WHERE ia.IDAutovehicul = ${req.params.id}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.delete("/vehicle/:id/instructor/:idInstructor", (req, res) => {
+    const query = `DELETE FROM InstructorAutovehicul WHERE IDAutovehicul = ${req.params.id} AND IDInstructor = ${req.params.idInstructor}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/vehicle/:id/instructor/:idInstructor", (req, res) => {
+    const query = `INSERT INTO InstructorAutovehicul (IDAutovehicul, IDInstructor) VALUES (${req.params.id}, ${req.params.idInstructor})`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.delete("/vehicle/:id", (req, res) => {
+    const query = `DELETE FROM Autovehicule WHERE IDAutovehicul = ${req.params.id}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.post("/vehicle", (req, res) => {
+    const { marca, model, anFabricatie, nrInmatriculare, serie, categorie, imagine } = req.body;
+    const query = `INSERT INTO Autovehicule (Marca, Model, AnFabricatie, NrInmatriculare, Serie, Categorie, Imagine) VALUES ('${marca}', '${model}', '${anFabricatie}', '${nrInmatriculare}', '${serie}', '${categorie}', '${imagine}')`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });

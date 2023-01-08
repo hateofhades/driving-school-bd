@@ -12,6 +12,7 @@ import MyTrips from "../views/MyTrips.vue";
 import AdminUsers from "../views/admin/Users.vue";
 import AdminStudents from "../views/admin/Students.vue";
 import AdminInstructors from "../views/admin/Instructors.vue";
+import AdminVehicles from "../views/admin/Vehicles.vue";
 
 import store from "@/store";
 
@@ -96,6 +97,12 @@ const routes: Array<RouteConfig> = [
     path: "/admin/instructors",
     name: "adminInstructors",
     component: AdminInstructors,
+    beforeEnter: isAdmin
+  },
+  {
+    path: "/admin/vehicles",
+    name: "adminVehicles",
+    component: AdminVehicles,
     beforeEnter: isAdmin
   }
 ];
