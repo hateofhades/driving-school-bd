@@ -218,7 +218,7 @@ app.get("/instructors", (req, res) => {
 
 app.post("/addInstructor", (req, res) => {
     const { username, password, email, nume, prenume, sex, datanastere, cnp, adresa, salariu } = req.body;
-    const query = `INSERT INTO Conturi (Username, Parola, Email) VALUES ('${username}', '${password}', '${email}')`;
+    const query = `INSERT INTO Conturi (Username, Parola, Email, TipCont) VALUES ('${username}', '${password}', '${email}', 'I')`;
     console.log(query);
 
     try {
