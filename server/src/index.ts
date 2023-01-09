@@ -939,6 +939,37 @@ app.get("/foiParcurs/:id", (req, res) => {
     }
 });
 
+app.get("/salariu/:salariu/masini/:masini", (req, res) => {
+    const query = `
+    SELECT i.IDCont, i.Nume, i.Prenume, i.Salariu, (SELECT COUNT(*)
+    FROM FoiTraseu ft JOIN Elevi e ON e.IDElev = ft.IDElev
+    WHERE i.IDInstructor = e.IDInstructor
+    GROUP BY e.IDInstructor) AS 'OreEfectuate'
+    FROM Instructori i
+    WHERE i.Salariu >= ${req.params.salariu} AND (SELECT COUNT(*) FROM InstructorAutovehicul ia WHERE ia.IDInstructor = i.IDInstructor) >= ${req.params.masini};
+    `;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });

@@ -53,12 +53,15 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col></v-col>
               <v-col>
                 <v-btn color="primary" to="/admin/vehicles"><v-icon class="mr-2">mdi-car</v-icon>
                   Autovehicule</v-btn>
               </v-col>
               <v-col></v-col>
+              <v-col>
+                <v-btn color="primary" @click="showStatistics"><v-icon class="mr-2">mdi-google-spreadsheet</v-icon>
+                  Statistici</v-btn>
+              </v-col>
             </v-row>
           </v-card-text>
         </v-card>
@@ -85,6 +88,36 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="showStatisticsDialog">
+      <v-card>
+        <v-card-title>Statistici</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field type="number" v-model="salariu" label="Salariu"></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field type="number" v-model="masini" label="Masini"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row v-for="statistica in statistics" v-bind:key="statistica.IDCont">
+            <v-col cols="4">
+              <v-text-field readonly v-model="statistica.Nume" label="Nume"></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field readonly v-model="statistica.Salariu" label="Salariu"></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field readonly v-model="statistica.OreEfectuate" label="Ore Efectuate"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="showStatisticsDialog = false">Inchide</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -92,11 +125,25 @@
 import Vue from "vue";
 import axios from "axios";
 
+interface IStatistics {
+  IDCont: number;
+  Nume: string;
+  Prenume: string;
+  Salariu: number;
+  OreEfectuate: number;
+}
+
 export default Vue.extend({
   name: "HomeView",
   data() {
+    const statistici: IStatistics[] = [];
+
     return {
       name: "",
+      showStatisticsDialog: false,
+      salariu: 3000,
+      masini: 2,
+      statistics: statistici
     }
   },
   methods: {
@@ -131,10 +178,36 @@ export default Vue.extend({
       } catch (error) {
         console.error(error);
       }
+    },
+    async showStatistics() {
+      this.showStatisticsDialog = true;
+
+      try {
+        const response = await axios.get("http://localhost:3000/salariu/" + this.salariu + "/masini/" + this.masini);
+        console.log(response.data.data);
+
+        if (response.data.error === 0) {
+          this.statistics = response.data.data;
+
+          this.statistics.forEach((statistica: IStatistics) => {
+            statistica.Nume = statistica.Nume + " " + statistica.Prenume;
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   mounted() {
     this.getUser();
+  },
+  watch: {
+    salariu () {
+      this.showStatistics();
+    },
+    masini () {
+      this.showStatistics();
+    }
   }
 });
 </script>
