@@ -14,6 +14,8 @@ import AdminStudents from "../views/admin/Students.vue";
 import AdminInstructors from "../views/admin/Instructors.vue";
 import AdminVehicles from "../views/admin/Vehicles.vue";
 
+import InstructorStudents from "../views/instructor/Students.vue";
+
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -104,6 +106,12 @@ const routes: Array<RouteConfig> = [
     name: "adminVehicles",
     component: AdminVehicles,
     beforeEnter: isAdmin
+  },
+  {
+    path: "/myStudents",
+    name: "myStudents",
+    component: InstructorStudents,
+    beforeEnter: isLogged
   }
 ];
 

@@ -800,6 +800,62 @@ app.post("/vehicle", (req, res) => {
     }
 });
 
+app.get("/instructor/:id/students", (req, res) => {
+    const query = `SELECT e.IDElev, e.Nume, e.Prenume, e.Adresa, e.Sex
+    FROM Elevi e JOIN Instructori i ON e.IDInstructor = i.IDInstructor JOIN Conturi c on i.IDCont = c.IDCont
+    WHERE c.IDCont = ${req.params.id}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/instructor/:id/student/:idElev/programari", (req, res) => {
+    const query = `SELECT e.Nume, e.Prenume, e.Adresa, e.Sex, p.DataOra, c.Marca, c.Model, c.NrInmatriculare
+    FROM Elevi e JOIN Instructori i ON i.IDInstructor = e.IDInstructor
+    JOIN Programari p ON p.IDElev = e.IDElev
+    JOIN Autovehicule c ON c.IDAutovehicul = p.IDAutovehicul
+    JOIN Conturi l ON l.IDCont = i.IDCont
+    WHERE l.IDCont = '${req.params.id}' AND p.DataOra > NOW() AND p.IDElev = '${req.params.idElev}'
+    ORDER BY p.DataOra;`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
