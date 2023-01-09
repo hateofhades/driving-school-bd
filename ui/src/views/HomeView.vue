@@ -64,6 +64,27 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row justify="center" align="center" v-if="$store.getters.getUser.TipCont === 'I'">
+      <v-col cols="10">
+        <v-card>
+          <v-card-title>Bine ai venit, {{ name }}!</v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col>
+                <v-btn color="primary" to="/myStudents"><v-icon class="mr-2">mdi-account-multiple-outline</v-icon>
+                  Elevii mei</v-btn>
+              </v-col>
+              <v-col>
+                <v-btn color="primary" to="/myFoi"><v-icon class="mr-2">mdi-clipboard</v-icon>Foi de traseu</v-btn>
+              </v-col>
+              <v-col>
+                <v-btn color="primary" to="/profile"><v-icon class="mr-2">mdi-account</v-icon>Profilul meu</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -79,9 +100,28 @@ export default Vue.extend({
     }
   },
   methods: {
-    async getUser() {
+    getUser() {
+      if (this.$store.getters.getUser.TipCont === 'U')
+        this.getInfoElev();
+      else if (this.$store.getters.getUser.TipCont === 'I')
+        this.getInfoInstructor();
+    },
+    async getInfoElev() {
       try {
         const response = await axios.get("http://localhost:3000/infoElev/" + this.$store.getters.getUser.Username);
+
+        if (response.data.error === 0) {
+          console.log(response.data.data);
+
+          this.name = response.data.data.Nume + " " + response.data.data.Prenume;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getInfoInstructor() {
+      try {
+        const response = await axios.get("http://localhost:3000/infoInstructor/" + this.$store.getters.getUser.Username);
 
         if (response.data.error === 0) {
           console.log(response.data.data);
