@@ -272,6 +272,41 @@ app.post("/addInstructor", (req, res) => {
     }
 });
 
+app.get("/infoInstructor/:username", (req, res) => {
+    const query = `SELECT i.Nume, i.Prenume, i.Sex, i.DataNastere, i.CNP, i.Adresa, i.Salariu
+    FROM Instructori i JOIN Conturi c ON i.IDCont = c.IDCont
+    WHERE c.Username = '${req.params.username}'`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+
+                console.log(error);
+                return;
+            }
+
+            if (results.length > 0) {
+                res.status(200).json({
+                    error: 0,
+                    data: results[0]
+                });
+            } else {
+                res.status(200).json({
+                    error: 401
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.get("/infoElev/:username", (req, res) => {
     const query = `SELECT e.Nume, e.Prenume, e.Sex, e.DataNastere, e.CNP, e.Adresa
     FROM Elevi e JOIN Conturi c ON e.IDCont = c.IDCont

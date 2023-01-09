@@ -50,7 +50,8 @@
                                 <v-list-item-title>Sex: {{ sex? "Masculin": "Feminin" }}</v-list-item-title>
                             </v-list-item>
                             <v-list-item>
-                                <v-list-item-title>Instructor: {{ numeInstructor }}</v-list-item-title>
+                                <v-list-item-title v-if="$store.getters.getUser.TipCont === 'U'">Instructor: {{ numeInstructor }}</v-list-item-title>
+                                <v-list-item-title v-else>Salariu: {{ salariu }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-card-text>
@@ -79,9 +80,10 @@
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import axios from "axios";
 
-export default {
+export default Vue.extend({
     name: "ProfilePage",
     data() {
         return {
@@ -100,6 +102,7 @@ export default {
             adresa: "",
             sex: true,
             numeInstructor: "",
+            salariu: 0
         };
     },
     methods: {
@@ -145,7 +148,12 @@ export default {
                 console.error(error);
             }
         },
-        async getUser() {
+        getUser() {
+            if (this.$store.getters.getUser.TipCont === 'U')
+                this.getElevProfile();
+            else this.getInstructorProfile();
+        },
+        async getElevProfile() {
             try {
                 const response = await axios.get("http://localhost:3000/infoElev/" + this.$store.getters.getUser.Username);
 
@@ -157,12 +165,27 @@ export default {
                     this.adresa = response.data.data.Adresa;
                     this.nastere = response.data.data.DataNastere.substring(0, 10);
                     this.sex = response.data.data.Sex === "m";
-                } else {
-                    this.showError = true;
-                    this.errorMessage = "Invalid password";
                 }
             } catch (error) {
                 console.error(error);
+            }
+        },
+        async getInstructorProfile() {
+            try {
+                const response = await axios.get("http://localhost:3000/infoInstructor/" + this.$store.getters.getUser.Username);
+
+                if (response.data.error === 0) {
+                    console.log(response.data.data);
+
+                    this.name = response.data.data.Nume + " " + response.data.data.Prenume;
+                    this.CNP = response.data.data.CNP;
+                    this.adresa = response.data.data.Adresa;
+                    this.nastere = response.data.data.DataNastere.substring(0, 10);
+                    this.sex = response.data.data.Sex === "m";
+                    this.salariu = response.data.data.Salariu;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         async getInstructor() {
@@ -173,9 +196,6 @@ export default {
                     console.log(response.data.data);
 
                     this.numeInstructor = response.data.data.Nume + " " + response.data.data.Prenume;
-                } else {
-                    this.showError = true;
-                    this.errorMessage = "Invalid password";
                 }
             } catch (error) {
                 console.error(error);
@@ -190,6 +210,6 @@ export default {
         this.getUser();
         this.getInstructor();
     }
-};
+});
 </script>
                 
