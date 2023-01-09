@@ -15,6 +15,7 @@ import AdminInstructors from "../views/admin/Instructors.vue";
 import AdminVehicles from "../views/admin/Vehicles.vue";
 
 import InstructorStudents from "../views/instructor/Students.vue";
+import InstructorFoi from "../views/instructor/Foi.vue";
 
 import store from "@/store";
 
@@ -111,6 +112,12 @@ const routes: Array<RouteConfig> = [
     path: "/myStudents",
     name: "myStudents",
     component: InstructorStudents,
+    beforeEnter: isLogged
+  },
+  {
+    path: "/myFoi",
+    name: "myFoi",
+    component: InstructorFoi,
     beforeEnter: isLogged
   }
 ];

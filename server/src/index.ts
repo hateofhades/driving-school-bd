@@ -856,6 +856,89 @@ app.get("/instructor/:id/student/:idElev/programari", (req, res) => {
     }
 });
 
+app.post("/foiParcurs", (req, res) => {
+    const { IDElev, IDAutovehicul, Data, KmParcursi } = req.body;
+    const query = `INSERT INTO FoiTraseu (IDElev, IDAutovehicul, Data, KmParcursi) VALUES ('${IDElev}', '${IDAutovehicul}', '${Data}', '${KmParcursi}')`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/instructor/:id/vehicles", (req, res) => {
+    const query = `SELECT c.IDAutovehicul, c.Marca, c.Model, c.NrInmatriculare, c.Imagine
+    FROM Autovehicule c JOIN InstructorAutovehicul ia ON ia.IDAutovehicul = c.IDAutovehicul
+    JOIN Instructori i ON i.IDInstructor = ia.IDInstructor
+    JOIN Conturi l ON l.IDCont = i.IDCont
+    WHERE l.IDCont = ${req.params.id}`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
+app.get("/foiParcurs/:id", (req, res) => {
+    const query = `SELECT ft.IDFoaie, e.Nume, e.Prenume, c.Marca, c.Model, c.NrInmatriculare, c.Imagine, ft.Data, ft.KmParcursi
+    FROM Elevi e JOIN FoiTraseu ft ON ft.IDElev = e.IDElev
+    JOIN Autovehicule c ON c.IDAutovehicul = ft.IDAutovehicul
+    WHERE e.IDElev IN (
+        SELECT e.IDElev FROM Elevi e JOIN Instructori i ON e.IDInstructor = i.IDInstructor JOIN Conturi c on i.IDCont = c.IDCont
+        WHERE c.IDCont = ${req.params.id}
+    );`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            }
+            else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });

@@ -75,7 +75,7 @@
                   Elevii mei</v-btn>
               </v-col>
               <v-col>
-                <v-btn color="primary" to="/myFoi"><v-icon class="mr-2">mdi-clipboard</v-icon>Foi de traseu</v-btn>
+                <v-btn color="primary" to="/myFoi"><v-icon class="mr-2">mdi-clipboard</v-icon>Foi de parcurs</v-btn>
               </v-col>
               <v-col>
                 <v-btn color="primary" to="/profile"><v-icon class="mr-2">mdi-account</v-icon>Profilul meu</v-btn>
