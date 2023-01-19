@@ -117,6 +117,23 @@
           <v-btn color="primary" @click="showStatisticsDialog = false">Inchide</v-btn>
         </v-card-actions>
       </v-card>
+      <v-card>
+        <v-card-text>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field type="number" v-model="km" label="KM"></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field type="number" v-model="caunt" label="Count"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row v-for="statisticsCar in statisticsCars" v-bind:key="statisticsCar.NrInmatriculare">
+            <v-col cols="12">
+              <v-text-field readonly v-model="statisticsCar.NrInmatriculare" label="Nr Inmatriculare"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-dialog>
   </v-container>
 </template>
@@ -133,17 +150,25 @@ interface IStatistics {
   OreEfectuate: number;
 }
 
+interface IStatisticsCar {
+  NrInmatriculare: string;
+}
+
 export default Vue.extend({
   name: "HomeView",
   data() {
     const statistici: IStatistics[] = [];
+    const statisticsCars: IStatisticsCar[] = [];
 
     return {
       name: "",
       showStatisticsDialog: false,
       salariu: 3000,
       masini: 2,
-      statistics: statistici
+      statistics: statistici,
+      statisticsCars: statisticsCars,
+      km: 10,
+      caunt: 2
     }
   },
   methods: {
@@ -196,6 +221,17 @@ export default Vue.extend({
       } catch (error) {
         console.error(error);
       }
+
+      try {
+        const response = await axios.get("http://localhost:3000/foiTraseuComplex/" + this.km + "/" + this.caunt);
+        console.log(response.data.data);
+        
+        if (response.data.error === 0) {
+          this.statisticsCars = response.data.data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   mounted() {
@@ -206,6 +242,12 @@ export default Vue.extend({
       this.showStatistics();
     },
     masini () {
+      this.showStatistics();
+    },
+    km () {
+      this.showStatistics();
+    },
+    caunt () {
       this.showStatistics();
     }
   }

@@ -939,6 +939,39 @@ app.get("/foiParcurs/:id", (req, res) => {
     }
 });
 
+app.get("/foiTraseuComplex/:km/:count", (req, res) => {
+    const query = `SELECT a.NrInmatriculare
+    FROM Autovehicule a
+    WHERE a.IDAutovehicul IN
+        (SELECT ft.IDAutovehicul
+            FROM FoiTraseu ft
+            WHERE ft.KmParcursi > ${req.params.km}
+            AND (SELECT COUNT(*)
+                    FROM FoiTraseu ftt
+                    WHERE ftt.IDAutovehicul = ft.IDAutovehicul
+                    GROUP BY ftt.IDAutovehicul) > ${parseInt(req.params.count, 10) - 1});`;
+    console.log(query);
+
+    try {
+        connection.query(query, (error, results, fields) => {
+            if (error) {
+                res.status(200).json({
+                    error: 500
+                });
+            } else {
+                res.status(200).json({
+                    error: 0,
+                    data: results
+                });
+            }
+        });
+    } catch (error) {
+        res.status(200).json({
+            error: 500
+        });
+    }
+});
+
 app.get("/salariu/:salariu/masini/:masini", (req, res) => {
     const query = `
     SELECT i.IDCont, i.Nume, i.Prenume, i.Salariu, (SELECT COUNT(*)
